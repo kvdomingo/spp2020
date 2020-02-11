@@ -1,5 +1,9 @@
 \documentclass[10pt,a4paper,twoside]{article}
 \input{spp.dat}
+\usepackage{physics}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\graphicspath{{images/}}
 
 %  Editorial staff will uncomment the next line
 % \providecommand{\artnum}[0]{XX-XX}
@@ -7,7 +11,7 @@
 
 \begin{document}
 
-\title{\TitleFont Compressive Sensing: Applications from 1-D to $N$-D}
+\title{\TitleFont Characterization of reconstruction error in compressively sampled speech}
 
 \author[*\negthickspace]{Kenneth V.~Domingo}
 \author[ ]{Maricor N.~Soriano
@@ -20,7 +24,7 @@
 \noindent
 Modern signal acquisition technologies are made possible by the Nyquist-Shannon sampling theorem (NST). However, this paradigm is extremely wasteful as the signal is compressed before storing it by systematically discarding the imperceptible information. Compressive sensing (CS) aims to directly sense the information that would otherwise survive this compression stage. Current literature focus exclusively on either audio or image signals, as well as quantifying their reconstruction quality with ambiguous metrics. In this paper, we compressively sample signals of arbitrary dimensions such as those consisting of combinations of audio and images, as well as quantify the reconstruction quality using metrics that are perceptually intuitive.
 
-\keywords{compressive sensing, sub-Nyquist sampling, signal processing}
+\keywords{compressive sensing, signal processing, compressive speech enhancement}
 
 \end{abstract}
 
@@ -28,38 +32,38 @@ Modern signal acquisition technologies are made possible by the Nyquist-Shannon 
 \thispagestyle{titlestyle}
 
 \section{Introduction}\label{sec:intro}
+Conventional sensing devices are based on the Nyquist-Shannon sampling theorem (NST), which states that given a signal's bandwidth, one can capture all the pertinent information about that signal if it is sampled at a rate
 
-\begin{figure}[tb]
-\centering
-\includegraphics[width=0.3\linewidth]{figure1.pdf}
-\caption{This is an example of a single column-wide figure. Figure captions are preferably self-contained and in vector format (versus raster format).}
-\label{fig:plot1}
-\end{figure}
+\begin{equation} \label{eq:nst}
+	f_S \geq 2f_B
+\end{equation}
 
-\begin{figure}[tbp]
-  \centering
-  \subfloat[Optional subcaption of this subfigure.]{\makebox[0.4\textwidth]{{\includegraphics[width=0.2\textwidth]{figure1.pdf}\label{fig:f1}}}}
-  \quad % or other spacing between figures
-  \subfloat{\makebox[0.4\textwidth]{\includegraphics[width=0.3\textwidth]{figure2.jpg}\label{fig:f2}}}
-  \caption{Multiple images can be inserted inline.}\label{fig:plots}
-\end{figure}
+\noindent where $f_B$ is the signal's highest frequency component, and $2f_B$ is known as the Nyquist rate \cite{Shannon1949}. After this sampling process, the information is compressed by exploiting the signal's natural compressibility in some domain. For regular consumer-grade and even commercial-grade applications, this tried-and-true method of sampling and systematically discarding the imperceptible information works flawlessly. However, in certain situations when transmission bandwidth and/or storage comes at a premium, this process is highly wasteful \cite{Candes2008b}. Cand\'{e}s et al. \cite{Candes2006} and Donoho et al. \cite{Donoho2006} independently pioneered compressive sensing (CS), which could directly sample the portions of a signal that would otherwise survive the compression stage in conventional sampling. In this new sampling paradigm, we consider the linear model of signal acquisition
 
-\begin{table}[b]
-\centering % center-align tables within a column
-\caption{This is an example of a single column table. Captions are preferably self-contained and placed above the table. Columns may be left-, center-, decimal marker-, or right-aligned.}\label{table:label1}
-\begin{tabular}{l c d{2.3} r}
-\toprule
-Example & Count 	1			& \multicolumn{1}{c}{Count 2} & Total\\
-\midrule
-A 						& 2.345 					& 5.435 																		& 16.78(3)\\
-B 						& 3.0 							& 12.0																				& 43.2(5)\\
-\bottomrule
-\end{tabular}
-\end{table}
+\begin{equation}\label{eq:cesa}
+	\vec{y} = \vec{A}\vec{x} \equiv \innerproduct{\vec{x}}{\vec{a}_k}
+\end{equation}
+
+In other words, the signal vector $\vec{x} \in \mathbb{R}^n$ is correlated with the basis waveforms $\vec{a}_k$ to yield a compressed information vector $\vec{y} \in \mathbb{R}^m$, where $m \ll n$. This causes the task of recovering $\vec{x}$ from $\vec{y}$ impossible since there exist an infinite number of candidate solutions $\bm\hat{\vec{x}}$ which satisfy \eqref{eq:cesa}. This can be circumvented by enforcing constraints based on models of natural signals, as well as those based on optimization techniques. In particular, reconstruction can be achieved by enforcing sparsity and incoherence constraints \cite{Candes2008b}. From this, the process of reconstruction is then recast into a general minimization problem
+
+\begin{equation}\label{eq:minl1}
+	\min_{\vec{x}} \norm{\vec{x}}_1 \quad \textrm{subject to} \quad \vec{A}\vec{x} = \vec{y}
+\end{equation}
+
+\noindent where $\norm{\vec{x}}_1$ denotes the $\ell_1$ norm of $\vec{x}$.
+
 
 \section{Methodology}
 
 \section{Results and Discussion}
+
+\begin{figure}[tb]
+	\centering
+	\includegraphics[width=\textwidth]{clean-pesq-snr.png}
+	\caption{Two most commonly used metrics in evaluating quality of reconstructed speech recordings. PESQ is sensitive to the signal compression (left), while the average segmental SNR is sensitive to the number of subbands (right).}
+	\label{fig:pesq-snr}
+\end{figure}
+
 
 \section{Conclusions}
 Here is the Summary or Conclusions section.
