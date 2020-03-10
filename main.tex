@@ -1,16 +1,27 @@
 \documentclass[10pt,a4paper,twoside]{article}
-\input{spp.dat}
+\input{spp}
 \usepackage{physics}
 \usepackage{amsfonts}
+\usepackage{changes}
 \usepackage{graphicx}
 \graphicspath{{images/}}
+\usepackage{lineno}
+\renewcommand\linenumberfont{\normalfont\tiny\ttfamily}
+\linenumbers
 \newcommand{\snrseg}{SNR$_{\mathrm{seg}}$}
+
+\makeatletter
+\@namedef{Changes@AuthorColor}{red}
+\colorlet{Changes@Color}{red}
+\makeatother
 
 %  Editorial staff will uncomment the next line
 % \providecommand{\artnum}[0]{XX-XX}
 % \renewcommand{\articlenum}[0]{SPP-\the\year-\artnum-}
 
 \begin{document}
+
+\include{listofchanges1}
 
 \title{\TitleFont Compressively sampled speech: How good is the recovery?}
 
@@ -39,13 +50,13 @@ Conventional sensing devices are based on the Nyquist-Shannon sampling theorem (
 	f_S \geq 2f_B
 \end{equation}
 
-\noindent where $f_B$ is the signal's highest frequency component, and $2f_B$ is known as the Nyquist rate. After this sampling process, the information is compressed by exploiting the signal's natural compressibility in some transform domain. For standard consumer-grade and even commercial-grade applications, this tried-and-true method of sampling and systematically discarding the imperceptible information works without a hitch. However, in certain situations when transmission bandwidth and/or storage comes at a premium, this process is highly wasteful. Cand\'{e}s et al. \cite{Candes2006} and Donoho et al. \cite{Donoho2006} independently pioneered compressive sensing (CS), which could directly sample the portions of a signal that would otherwise survive the compression stage in conventional sampling. In this new sampling paradigm, we consider the linear model of signal acquisition
+\noindent where $f_B$ is the signal's highest frequency component, and $2f_B$ is known as the Nyquist rate. After this sampling process, the information is compressed by exploiting the signal's natural compressibility in some transform domain. For standard \linelabel{ln:daily-tasks}\replaced{daily tasks}{consumer-grade and even commercial-grade applications}, this tried-and-true method of sampling and systematically discarding the imperceptible information \replaced{is acceptable for most applications}{works without a hitch}. However, in certain situations when transmission bandwidth and/or storage comes at a premium, this process is highly wasteful. Cand\'{e}s et al. \cite{Candes2006} and Donoho et al. \cite{Donoho2006} independently pioneered compressive sensing (CS), which could directly sample the portions of a signal that would otherwise survive the compression stage in conventional sampling. In this new sampling paradigm, we consider the linear model of signal acquisition
 
 \begin{equation}\label{eq:cesa}
 	y_k = \vec{x} \cdot \vec{a}_k
 \end{equation}
 
-In other words, the signal vector $\vec{x} \in \mathbb{R}^n$ is correlated with the basis waveforms $\vec{a}_k$ to yield a compressed information vector $\vec{y} \in \mathbb{R}^m$, where $m \ll n$. This causes the task of recovering $\vec{x}$ from $\vec{y}$ impossible since there exist an infinite number of candidate solutions $\bm\hat{\vec{x}}$ which satisfy \eqref{eq:cesa}. This can be circumvented by enforcing constraints based on models of natural signals, as well as those based on optimization techniques. In particular, reconstruction can be achieved by enforcing sparsity and incoherence constraints \cite{Candes2008b}. From this, the process of reconstruction is then recast into a general minimization problem
+In other words, the signal vector $\vec{x} \in \mathbb{R}^n$ is correlated with the basis waveforms $\vec{a}_k$ to yield a compressed information vector $\vec{y} \in \mathbb{R}^m$, where $m \ll n$. This causes the task of recovering $\vec{x}$ from $\vec{y}$ impossible since there exist an infinite number of candidate solutions $\bm\hat{\vec{x}}$ which satisfy \eqref{eq:cesa}. This can be circumvented by enforcing constraints based on models of natural signals, as well as those based on optimization techniques. In particular, reconstruction can be achieved by enforcing sparsity and incoherence constraints \cite{Candes2008b}. \linelabel{ln:from-this}\deleted{From this,} The process of reconstruction \replaced{can}{is} then \added{be} recast into a general minimization problem
 
 \begin{equation}\label{eq:minl1}
 	\min_{\vec{x}} \norm{\vec{x}}_1 \quad \textrm{subject to} \quad \vec{A}\vec{x} = \vec{y}
@@ -53,9 +64,9 @@ In other words, the signal vector $\vec{x} \in \mathbb{R}^n$ is correlated with 
 
 \noindent where $\norm{\vec{x}}_1$ denotes the $\ell_1$ norm of $\vec{x}$. This problem can be solved in a number of ways with various algorithms.
 
-Romero et al. \cite{Romero2016,Romero2018} performed compressive sensing of images in the Fourier domain and showed that it could be used to increase the signal-to-noise ratio of a signal. They also showed that such a sampling method was robust against noise. In the realm of audio signals, \cite{Mathew2016} constructed sensing matrices using a Gaussian-Logistic map; this was one of the first studies which use chaotic maps instead of random sequences, and is a prelude to the use of CS as an encryption algorithm. Through evolutionary algorithms such as differential evolutions, direct reconstruction of CS signals could also be attained in the temporal domain \cite{Andras2018}. With audio recordings containing speech, however, the process is not as straightforward. Such signals typically use sampling rates of $\sim 10^{3}$ Hz, so it is necessary to process them in slices, in the same way that large images can be processed in patches. Low et al. \cite{Low2018} performed this process by representing a signal in the spectrogram/modulation domain and applying the desired CS algorithm per sampling window.
+Romero et al. \cite{Romero2016,Romero2018} performed compressive sensing of images in the Fourier domain and showed that it could be used to increase the signal-to-noise ratio of a signal. They also showed that such a sampling method was robust against noise. In the realm of audio signals, \linelabel{ln:mathew}\added{Mathew \& Premanand} \cite{Mathew2016} constructed sensing matrices using a Gaussian-Logistic map\linelabel{ln:theirs}\replaced{. Theirs}{; this} was one of the first studies which use chaotic maps instead of random sequences, and is a prelude to the use of CS as an encryption algorithm. Through evolutionary algorithms such as differential evolutions, direct reconstruction of CS signals could also be attained in the temporal domain \cite{Andras2018}. With audio recordings containing speech, however, the process is not as straightforward. Such signals typically use sampling rates of $\sim 10^{3}$ Hz, so it is necessary to process them in slices, in the same way that large images can be processed in patches. Low et al. \cite{Low2018} performed this process by representing a signal in the spectrogram/modulation domain and applying the desired CS algorithm per sampling window.
 
-In this paper, we perform compressive sensing of audio signals containing speech, and quantify the reconstruction quality using the International Telecommunication Standardization Sector (ITU-T) recommendation P.862, otherwise known as the Perceptual Evaluation of Speech Quality (PESQ). This metric is a full-reference, perceptually intuitive scoring system which models the obsolete mean opinion scores (MOS). Additionally, the average segmental signal-to-noise ratio (\snrseg), which is commonly used in evaluating audio reconstruction quality, was also used. However, unlike the former, this is non-intuitive since its values are unbounded and, for a constant signal, varies with the number of sampling windows. We adopt the processing workflow of Low et al. while varying the length and number of sampling windows, as well as the compression ratio. In contrast with Mathew et al., we stick with the usual sensing matrices derived from i.i.d.~uniform random samples. In an earlier work \cite{Domingo2019}, we compared common algorithms in terms of computation time and reconstruction quality, and showed that LASSO strikes a balance between these two. We use this algorithm in this paper to perform the CS reconstruction.
+In this paper, we perform compressive sensing of audio signals containing speech, and quantify the reconstruction quality using the International Telecommunication Standardization Sector (ITU-T) recommendation P.862, otherwise known as the Perceptual Evaluation of Speech Quality (PESQ). \linelabel{ln:motivation}\deleted{This metric is a full-reference, perceptually intuitive scoring system which models the obsolete mean opinion scores (MOS).} \added{Current metrics for evaluating reconstructed speech quality which are based on the statistical properties of the signal, such as mean-squared error (MSE) and peak signal-to-noise ratio (PSNR), are non-intuitive and have undefined bounds. Contrary to this, PESQ is an objective speech quality assessment primarily modeled after an older subjective scoring system, essentially emulating how a group of people may rate a signal from 1 (bad) to 5 (excellent) given a clean reference signal \cite{pesq}.} Additionally, the average segmental signal-to-noise ratio (\snrseg), which is commonly used in evaluating window-sampled audio reconstruction quality, was also used. However, \linelabel{ln:motivation-snrseg}\replaced{its values are}{unlike the former, this is } non-intuitive \replaced{since it is also based on the statistical properties of the signal.}{since its values are unbounded and, for a constant signal,} \added{Consequently, its value also varies with the number of sampling windows, which is an important variable to be explored in this paper. Furthermore, we are also interested in how changing the compression ratio and/or number of sampling windows affect the reconstruction quality in terms of these two metrics.} We adopt the processing workflow of Low et al. while varying the length and number of sampling windows, as well as the compression ratio. In contrast with Mathew et al., we stick with the usual sensing matrices derived from i.i.d.~uniform random samples. In an earlier work \cite{Domingo2019}, we compared common algorithms in terms of computation time and reconstruction quality, and showed that LASSO strikes a balance between these two. We use this algorithm in this paper to perform the CS reconstruction.
 
 
 \section{Methodology}\label{sec:metho}
@@ -88,13 +99,13 @@ The second requirement of CS is that the sensing matrix should be incoherent wit
 \noindent where $m$ is the number of samples, and $\alpha$ is the $\ell_1$ regularization parameter.
 
 \subsection{Reconstruction evaluation}\label{ssec:eval}
-Reconstruction quality was evaluated using PESQ, which performs a series of standardized tests modeled after qualitative metrics. This algorithm analyzes and compares the reconstructed signal with the original and returns a value from 1 (bad) to 5 (excellent) \cite{pesq}. The \snrseg~was also used, which is defined as \cite{Loizou}
+Reconstruction quality was evaluated using PESQ, \linelabel{ln:pesq-reference}\replaced{which is a full-reference, perceptually intuitive scoring system which models the obsolete mean opinion scores (MOS).}{which performs a series of standardized tests modeled after qualitative metrics}. \deleted{This algorithm analyzes and compares the reconstructed signal with the original and returns a value from 1 (bad) to 5 (excellent) \cite{pesq}}. The \snrseg~was also used, which is defined \cite{Loizou} as
 
 \begin{equation}\label{eq:snrseg}
 	\mathrm{SNR_{seg}} = \frac{10}{B} \sum_{b=0}^{B-1} \log_{10} \frac{\sum_{i=Nb}^{Nb+N-1} x_i^2}{\sum_{i=Nb}^{Nb+N-1} \qty(x_i - \hat{x}_i)^2}
 \end{equation}
 
-\noindent where $N$ is the frame length, $B$ is the number of frames, $x_i$ is the original signal, and $\hat{x}_i$ is the reconstructed signal.
+\noindent where $N$ is the frame length, $B$ is the number of frames, $x_i$ \replaced{are}{is} the original signal \added{samples}, and $\hat{x}_i$ \replaced{are}{is} the reconstructed signal \added{samples}.
 
 
 \section{Results and Discussion}
