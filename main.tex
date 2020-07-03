@@ -29,7 +29,7 @@
 
 \begin{abstract}
 \noindent
-Modern signal acquisition technologies are made possible by the Nyquist-Shannon sampling theorem (NST). However, this paradigm is extremely wasteful as the signal is compressed before storing it by systematically discarding the imperceptible information. Compressive sensing (CS) aims to directly sense the relevant information. Current literature focus either on formulating more computationally-efficient algorithms, or methods which improve the reconstruction quality. In this paper, we quantify the reconstruction quality of compressively sampled speech with a perceptually intuitive metric---the Perceptual Evaluation of Speech Quality (PESQ)---and with the standard average segmental SNR (\snrseg). It is shown that the quality of recovery of compressively sampled speech evaluated using PESQ is dependent on the compression ratio, and independent of the number of subbands used to represent the signal in the spectrogram domain.
+Modern signal acquisition technologies are made possible by the Nyquist-Shannon sampling theorem (NST). However, this paradigm is extremely wasteful as the signal is compressed before storing it by systematically discarding imperceptible information. Compressive sensing (CS) aims to directly sense the relevant information. Current literature focus either on formulating more computationally-efficient algorithms, or methods which improve the reconstruction quality. In this paper, we quantify the reconstruction quality of compressively sampled speech with a perceptually intuitive metric---the Perceptual Evaluation of Speech Quality (PESQ)---and with the standard average segmental SNR (\snrseg). The quality of recovery of compressively sampled speech evaluated using PESQ is dependent on the compression ratio, and independent of the number of subbands used to represent the signal in the spectrogram domain.
 
 \keywords{compressive sensing, signal processing, spectrogram}
 
@@ -39,19 +39,13 @@ Modern signal acquisition technologies are made possible by the Nyquist-Shannon 
 \thispagestyle{titlestyle}
 
 \section{Introduction}\label{sec:intro}
-Conventional sensing devices are based on the Nyquist-Shannon sampling theorem (NST), which states that given a signal's bandwidth, one can capture all the pertinent information about that signal if it is sampled at a rate
-
-\begin{equation} \label{eq:nst}
-	f_S \geq 2f_B
-\end{equation}
-
-\noindent where $f_B$ is the signal's highest frequency component, and $2f_B$ is known as the Nyquist rate. After this sampling process, the information is compressed by exploiting the signal's natural compressibility in some transform domain. For standard daily tasks, this tried-and-true method of sampling and systematically discarding the imperceptible information is acceptable for most applications. However, in certain situations when transmission bandwidth and/or storage comes at a premium, this process is highly wasteful. Cand\'{e}s et al. \cite{Candes2006} and Donoho et al. \cite{Donoho2006} independently pioneered compressive sensing (CS), which could directly sample the portions of a signal that would otherwise survive the compression stage in conventional sampling. In this new sampling paradigm, we consider the linear model of signal acquisition
+Conventional sensing devices are based on the Nyquist-Shannon sampling theorem (NST), which states that given a signal's bandwidth, one can capture all the pertinent information about that signal if it is sampled at a rate at least twice the signal's highest frequency component. After sampling, information is compressed by exploiting the signal's natural compressibility in some transform domain. For most applications, this tried-and-true method of sampling and systematically discarding the imperceptible information is acceptable. However, in situations when transmission bandwidth and/or storage comes at a premium, this process is highly wasteful. Cand\'{e}s et al. \cite{Candes2006} and Donoho et al. \cite{Donoho2006} independently pioneered compressive sensing (CS), which could directly sample the portions of a signal that would otherwise survive the compression stage in conventional sampling. In this new sampling paradigm, we consider the linear model of signal acquisition
 
 \begin{equation}\label{eq:cesa}
 	y_k = \vec{x} \cdot \vec{a}_k
 \end{equation}
 
-In other words, the signal vector $\vec{x} \in \mathbb{R}^n$ is correlated with the basis waveforms $\vec{a}_k$ to yield a compressed information vector $\vec{y} \in \mathbb{R}^m$, where $m \ll n$. This causes the task of recovering $\vec{x}$ from $\vec{y}$ impossible since there exist an infinite number of candidate solutions $\bm\hat{\vec{x}}$ which satisfy \eqref{eq:cesa}. This can be circumvented by enforcing sparsity and incoherence constraints \cite{Candes2008b} based on models of natural signals. The process of reconstruction can then be recast into a general minimization problem
+The signal vector $\vec{x} \in \mathbb{R}^n$ is correlated with the basis waveforms $\vec{a}_k$ to yield a compressed information vector $\vec{y} \in \mathbb{R}^m$, where $m \ll n$. This causes the task of recovering $\vec{x}$ from $\vec{y}$ infeasible since there exist an infinite number of candidate solutions $\bm\hat{\vec{x}}$ which satisfy \eqref{eq:cesa}. This can be circumvented by enforcing sparsity and incoherence constraints \cite{Candes2008b} based on models of natural signals. The process of reconstruction can then be recast into a general minimization problem
 
 \begin{equation}\label{eq:minl1}
 	\min_{\vec{x}} \norm{\vec{x}}_1 \quad \textrm{subject to} \quad \vec{A}\vec{x} = \vec{y}
@@ -70,7 +64,7 @@ In this paper, we perform compressive sensing of audio signals containing speech
 The test signals used in this paper were obtained from the TIMIT Acoustic-Phonetic Continuous Speech Corpus \cite{timit}, which contains speech recordings, in WAV format, of English speakers separated by region, sex, and spoken sentence. All recordings have a sampling rate of 16 kHz and are 3 seconds long on average. This was then downsampled to 8 kHz to reduce the number of sampling windows needed, and also because the PESQ algorithm only applies to 8 kHz signals.
 
 \subsection{Transforming to a sparse domain}\label{ssec:sparse}
-The first requirement for CS is that a signal should be transformed to some domain where it can be represented sparsely. In the case of recorded speech, the most appropriate domain would be the modulation domain, otherwise known as its spectrogram. First, we define the length of the sampling window and the percent overlap between adjacent windows, and divide the signal into frames using this sliding window. We then multiply each frame by a window function, typically a Hann window, defined as
+The first requirement for CS is that a signal should be transformed to a domain where it can be represented sparsely. In the case of recorded speech, the most appropriate domain would be the modulation domain, otherwise known as its spectrogram. First, we define the length of the sampling window and the percent overlap between adjacent windows, and divide the signal into frames using this sliding window. We then multiply each frame by a window function, typically a Hann window, defined as
 
 \begin{equation}\label{eq:hann}
 	w[n] = \sin[2](\frac{\pi n}{N}), \quad 0 \leq n \leq N
@@ -94,7 +88,9 @@ The second requirement of CS is that the sensing matrix should be incoherent wit
 \noindent where $m$ is the number of samples, and $\alpha$ is the $\ell_1$ regularization parameter.
 
 \subsection{Reconstruction evaluation}\label{ssec:eval}
-Reconstruction quality was evaluated using PESQ, which is a full-reference, perceptually intuitive scoring system which models the obsolete mean opinion scores (MOS). The \snrseg~, defined as
+Reconstruction quality was evaluated using PESQ, which is a full-reference, perceptually intuitive scoring system which models the obsolete mean opinion scores (MOS). Due to the complexity of the algorithm, we refer the reader to Sec.~10 of the PESQ manual \cite{pesq} for an in-depth discussion.
+
+The \snrseg~, defined as
 
 \begin{equation}\label{eq:snrseg}
 	\mathrm{SNR_{seg}} = \frac{10}{B} \sum_{b=0}^{B-1} \log_{10} \frac{\sum_{i=Nb}^{Nb+N-1} x_i^2}{\sum_{i=Nb}^{Nb+N-1} \qty(x_i - \hat{x}_i)^2}
@@ -104,7 +100,7 @@ Reconstruction quality was evaluated using PESQ, which is a full-reference, perc
 
 
 \section{Results and Discussion}
-A test signal was chosen at random from the TIMIT corpus, specifically the \texttt{DR8/MJLN0/SA1.wav} file. This indicates that the speaker was from dialect region 8 (nomadic), was male with speaker code \texttt{JLN0}, and spoke sentence code \texttt{SA1}, which reads ``She had your dark suit in greasy wash water all year''. After downsampling, the signal was compressively sampled with a CR of 40\% using 1024 frames and 75\% frame overlap. The optimal regularization $\alpha$ was determined automatically via 5-fold cross validation, and the reconstruction result is shown in Fig.~\ref{fig:recovered}. Qualitative comparison in the temporal domain shows that the waveforms of the original and reconstructed are similar; in the modulation domain, the dynamic range appears to have decreased, but the dominant frequencies can still be observed. Evaluating the PESQ and \snrseg~yields values of 2.50 and 0.07, respectively. At face value, we can immediately tell from the PESQ that the reconstructed signal quality is slightly below average. However, this distinction cannot be made for the \snrseg~since its bounds are not clearly defined.
+A test signal was chosen at random from the TIMIT corpus, specifically the \texttt{DR8/MJLN0/SA1.wav} file. This indicates that the speaker was from dialect region 8 (nomadic), was male with speaker code \texttt{JLN0}, and spoke sentence code \texttt{SA1}, which reads ``She had your dark suit in greasy wash water all year''. After downsampling, the signal was compressively sampled with a CR of 40\% using 1024 frames and 75\% frame overlap. The optimal regularization $\alpha$ was determined automatically via 5-fold cross validation, and the reconstruction result is shown in Fig.~\ref{fig:recovered}. Qualitative comparison in the temporal domain shows that the waveforms of the original and reconstructed are similar; in the modulation domain, the dynamic range decreased, but the dominant frequencies can still be observed. Evaluating the PESQ and \snrseg~yields values of 2.50 and 0.07, respectively. By inspection of the PESQ value alone, we can tell that the reconstructed signal quality is slightly below average. This distinction cannot be made for the \snrseg~since its bounds are not clearly defined.
 
 Next, the error maps for the signal were generated by compressively sensing the signal and evaluating the metrics for varying CR $m/n \in [0.1, 0.9]$ (in increments of 0.1) and number of frames/subbands $\in \qty{128, 256, 512, 1024}$, while keeping the frame overlap constant. Figure \ref{fig:pesq-snr} shows the PESQ map (left) and the \snrseg~map (right). The former exhibits sensitivity to the CR and achieves a value of 4.0 (good) at around 70\% compression. The latter tells a different story: it shows sensitivity towards the number of frames/subbands (as it is an \textit{average} metric) with some additional degradation at lower CR, and achieves a maximum value of 0.08 at around 1024 frames.
 
