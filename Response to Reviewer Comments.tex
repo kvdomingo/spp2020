@@ -15,42 +15,53 @@ Thank you for reviewing our paper entitled ``Compressively sampled speech: How g
 
 \begin{enumerate}
 	\item
-		\begin{enumerate}
-			\item \textbf{You are able to clearly present why using PESQ is advantageous over other metrics. However, in the introduction, I think discussion on how the algorithm works, how it is determined, etc. is lacking. Upon reading your paper, I just treated it as a blackbox algorithm. Adding a couple of sentences could prove helpful to the reader.}
-			
-			The algorithm of PESQ is quite long and complex, and we could not summarize it in the paper---even in diagram form---without going over the page limit. We refer the reader to the source material instead in Sec.~2.4, Paragraph 1:
-			
-			\begin{quotation}
-				\textcolor{Green}{Due to the complexity of the algorithm, we refer the reader to Sec.~10 of the PESQ manual [8] for an in-depth discussion.}
-			\end{quotation}
-		\end{enumerate}
+	\begin{enumerate}
+		\item \textbf{You are able to clearly present why using PESQ is advantageous over other metrics. However, in the introduction, I think discussion on how the algorithm works, how it is determined, etc. is lacking. Upon reading your paper, I just treated it as a blackbox algorithm. Adding a couple of sentences could prove helpful to the reader.}
+		
+		The algorithm of PESQ is quite long and complex, and we could not summarize it in the paper---even in diagram form---without going over the page limit. We refer the reader to the source material instead in Sec.~2.4, Paragraph 1:
+		
+		\begin{quotation}
+			\textcolor{Green}{Due to the complexity of the algorithm, we refer the reader to Sec.~10 of the PESQ manual [8] for an in-depth discussion.}
+		\end{quotation}
+	\end{enumerate}
 	
 	\item
-		\begin{enumerate}
-			\item \textbf{Optional change: If possible, I would prefer it if you move the figures near where you mention them instead of all at the end.}
-			
-			From what we know, LaTeX automatically optimizes the positioning of elements in order to maximize space (and minimize page count). Thus, we opted to leave the positioning of the figures to the compiler.
-		\end{enumerate}
+	\begin{enumerate}
+		\item \textbf{Optional change: If possible, I would prefer it if you move the figures near where you mention them instead of all at the end.}
+		
+		From what we know, LaTeX automatically optimizes the positioning of elements in order to maximize space (and minimize page count). Thus, we opted to leave the positioning of the figures to the compiler.
+	\end{enumerate}
 	
 	\item
+	\begin{enumerate}
+		\item \textbf{For future studies, can you try multiple audio files/samples? Maybe the results are specific for the audio sample (or explain why it is a good representative aside from being a random sample). However, I think the most important idea in this paper is using PESQ as a metric for CS-reconstructed audio signals so I think it can stand on its own without requiring more samples.}
+		
+		We conducted experiments on various audio files which also came from the TIMIT dataset and the results were consistent following the same procedure. This is most likely due to the consistency of the dataset as well, i.e., a number of unique sentences spoken by people with different accents and genders, all cleanly recorded at a rate of 16 kHz. The specific audio file used in this paper is simply a representative case based on all the previous experiments. For future studies, we can test signals from other datasets or record our own. You are correct regarding the important idea of the paper.
+		
+		
+		\item \textbf{Change ``At face value'' to ``Visually,''. Remove ``we can immediately tell''.}
+		
+		By ``At face value'', we are referring to the value of PESQ. To avoid confusion, we have replaced the sentence to the following:
+		
+		\begin{quotation}
+			\textcolor{Green}{By inspection of the PESQ value alone, we can tell that the reconstructed signal quality is slightly below average.}
+		\end{quotation}
+		
+		
+		\item \textbf{How do you determine ``slightly below average''?}
+		
+		The PESQ algorithm was modeled on subjective scoring systems. Such systems would ask people to rate an output signal, say, an integer from 1 to 5, given the input signal. In that case, 1 would correspond to bad, and 5 excellent. The output of PESQ is a float, but the authors still have opted to label the integer scores as 1.0 - bad, 2.0 - below average, 3.0 - average, 4.0 - good, 5.0 - perfect. The test signal yielded a PESQ value of 2.50, which is slightly below average.
+	\end{enumerate}
+
+	\item
 		\begin{enumerate}
-			\item \textbf{For future studies, can you try multiple audio files/samples? Maybe the results are specific for the audio sample (or explain why it is a good representative aside from being a random sample). However, I think the most important idea in this paper is using PESQ as a metric for CS-reconstructed audio signals so I think it can stand on its own without requiring more samples.}
+			\item \textbf{Please incorporate changes that you mentioned in your reply to the reviewer but was not added to the manuscript. For example, add the conversion table from number to qualitative description -- "slightly below average".}
 			
-			We conducted experiments on various audio files which also came from the TIMIT dataset and the results were consistent following the same procedure. This is most likely due to the consistency of the dataset as well, i.e., a number of unique sentences spoken by people with different accents and genders, all cleanly recorded at a rate of 16 kHz. The specific audio file used in this paper is simply a representative case based on all the previous experiments. For future studies, we can test signals from other datasets or record our own. You are correct regarding the important idea of the paper.
-			
-			
-			\item \textbf{Change ``At face value'' to ``Visually,''. Remove ``we can immediately tell''.}
-			
-			By ``At face value'', we are referring to the value of PESQ. To avoid confusion, we have replaced the sentence to the following:
+			We have added Table 1 in Sec.~2.4 for the conversion of PESQ from quantitative to qualitative. In the preceding paragraph, the following sentence has been added:
 			
 			\begin{quotation}
-				\textcolor{Green}{By inspection of the PESQ value alone, we can tell that the reconstructed signal quality is slightly below average.}
+				...models the obsolete mean opinion scores (MOS). \textcolor{Green}{Its output is a float in the range $[1, 5]$ with corresponding qualitative descriptions at integer values, as shown in Table~1.}
 			\end{quotation}
-			
-			
-			\item \textbf{How do you determine ``slightly below average''?}
-			
-			The PESQ algorithm was modeled on subjective scoring systems. Such systems would ask people to rate an output signal, say, an integer from 1 to 5, given the input signal. In that case, 1 would correspond to bad, and 5 excellent. The output of PESQ is a float, but the authors still have opted to label the integer scores as 1.0 - bad, 2.0 - below average, 3.0 - average, 4.0 - good, 5.0 - perfect. The test signal yielded a PESQ value of 2.50, which is slightly below average.
 		\end{enumerate}
 \end{enumerate}
 

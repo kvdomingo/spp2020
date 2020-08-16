@@ -2,7 +2,7 @@
 \input{spp}
 \usepackage{physics}
 \usepackage{amsfonts}
-\usepackage{changes}
+\usepackage{tabularx}
 \usepackage{graphicx}
 \graphicspath{{images/}}
 \newcommand{\snrseg}{SNR$_{\mathrm{seg}}$}
@@ -88,9 +88,19 @@ The second requirement of CS is that the sensing matrix should be incoherent wit
 \noindent where $m$ is the number of samples, and $\alpha$ is the $\ell_1$ regularization parameter.
 
 \subsection{Reconstruction evaluation}\label{ssec:eval}
-Reconstruction quality was evaluated using PESQ, which is a full-reference, perceptually intuitive scoring system which models the obsolete mean opinion scores (MOS). Due to the complexity of the algorithm, we refer the reader to Sec.~10 of the PESQ manual \cite{pesq} for an in-depth discussion.
+Reconstruction quality was evaluated using PESQ, which is a full-reference, perceptually intuitive scoring system which models the obsolete mean opinion scores (MOS). Its output is a float in the range $[1, 5]$ with corresponding qualitative descriptions at integer values, as shown in Table~\ref{tab:pesq}. Due to the complexity of the algorithm, we refer the reader to Sec.~10 of the PESQ manual \cite{pesq} for an in-depth discussion.
 
-The \snrseg~, defined as
+\begin{table}[htb]
+	\centering
+	\caption{PESQ integer values and their corresponding qualitative descriptions.}
+	\label{tab:pesq}
+	\begin{tabularx}{\textwidth}{ >{\bfseries}r *{5}{| >{\centering\arraybackslash}X} }
+		PESQ value & 1 & 2 & 3 & 4 & 5 \\
+		Description & bad & below average & average & good & perfect
+	\end{tabularx}
+\end{table}
+
+The \snrseg, defined as
 
 \begin{equation}\label{eq:snrseg}
 	\mathrm{SNR_{seg}} = \frac{10}{B} \sum_{b=0}^{B-1} \log_{10} \frac{\sum_{i=Nb}^{Nb+N-1} x_i^2}{\sum_{i=Nb}^{Nb+N-1} \qty(x_i - \hat{x}_i)^2}
